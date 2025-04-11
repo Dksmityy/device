@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Akses Kamera & Lokasi</title>
+</head>
+<body>
+  <h1>Akses Kamera & Lokasi</h1>
+  <button onclick="aksesKamera()">Buka Kamera</button>
+  <button onclick="aksesLokasi()">Cek Lokasi</button>
+
+  <br><br>
+  <video id="video" width="300" height="200" autoplay></video>
+  <p id="lokasi"></p>
+
+  <script>
+    function aksesKamera() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          document.getElementById('video').srcObject = stream;
+        })
+        .catch(err => {
+          alert('Gagal akses kamera: ' + err);
+        });
+    }
+
+    function aksesLokasi() {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          document.getElementById('lokasi').textContent = `Latitude: ${lat}, Longitude: ${lon}`;
+        }, err => {
+          alert('Gagal ambil lokasi: ' + err.message);
+        });
+      } else {
+        alert('Browser tidak mendukung geolokasi');
+      }
+    }
+  </script>
+</body>
+</html>
